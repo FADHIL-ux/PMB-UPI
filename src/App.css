@@ -1,37 +1,254 @@
+
 main {
   width: 90%;
   max-width: 1100px;
-  margin: 30px auto;
-  font-family: Arial, sans-serif;
+  margin: 35px auto;
+  font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-h1 {
+/* Judul utama */
+main > h1 {
   text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #263b53;
+  margin-bottom: 25px;
 }
 
+/* Navigasi */
 nav {
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 12px;
   margin: 20px 0;
 }
 
 nav a {
-  margin: 10px;
   text-decoration: none;
+  color: #64748b;
+  padding: 9px 16px;
+  border-radius: 7px;
+  transition: 0.2s;
+}
+
+nav a:hover {
+  background: #e8eef5;
+  color: #315779;
+}
+
+/* Garis pembatas */
+hr {
+  border: none;
+  border-top: 1px solid #e1e7ed;
+  margin: 25px 0;
+}
+
+/* Judul halaman */
+h2 {
+  color: #263b53;
+  margin-bottom: 15px;
+}
+
+/* Formulir */
+form {
+  max-width: 700px;
+  margin: 25px auto;
+  padding: 30px;
+  background: #ffffff;
+  border: 1px solid #e5eaf0;
+  border-radius: 12px;
+  box-shadow: 0 5px 20px rgba(30, 50, 70, 0.04);
+}
+
+label {
+  display: inline-block;
+  margin-bottom: 7px;
+  color: #40536a;
+  font-weight: 600;
 }
 
 input,
 select,
 textarea {
   width: 100%;
-  padding: 10px;
-  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #d8e0e8;
+  border-radius: 7px;
+  background: #ffffff;
+  color: #334155;
+  font: inherit;
+  outline: none;
+  transition: 0.2s;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #8ba9c5;
+  box-shadow: 0 0 0 3px rgba(139, 169, 197, 0.15);
 }
 
 textarea {
   height: 100px;
+  resize: vertical;
 }
 
+/* Tombol */
 button {
-  padding: 10px 25px;
+  padding: 11px 25px;
+  border: none;
+  border-radius: 7px;
+  background: #527797;
+  color: white;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+button:hover {
+  background: #3e627f;
+}
+
+/* Tampilan hasil pendaftaran */
+form + div {
+  max-width: 700px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #edf4f8;
+  border: 1px solid #d8e5ed;
+  border-radius: 10px;
+}
+
+/* Tampilan HP */
+@media (max-width: 600px) {
+  main {
+    width: 92%;
+    margin: 20px auto;
+  }
+
+  form {
+    padding: 20px;
+  }
+
+  nav {
+    gap: 5px;
+  }
+
+  nav a {
+    padding: 8px 10px;
+  }
+}
+
+
+/* HOME PAGE */
+.home-page {
+  color: #475569;
+}
+
+.hero {
+  background: linear-gradient(120deg, #edf3f7, #f8fafc);
+  border: 1px solid #e2eaf0;
+  border-radius: 14px;
+  padding: 65px 45px;
+  margin: 30px 0;
+  text-align: left;
+}
+
+.hero-label {
+  color: #64839e;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+}
+
+.hero h1 {
+  text-align: left;
+  font-size: 42px;
+  margin: 18px 0;
+  color: #263b53;
+}
+
+.hero p {
+  max-width: 600px;
+  color: #64748b;
+  margin-bottom: 28px;
+}
+
+.hero-button {
+  display: inline-block;
+  background: #527797;
+  color: white;
+  text-decoration: none;
+  padding: 12px 23px;
+  border-radius: 7px;
+  font-weight: 600;
+  transition: 0.2s;
+}
+
+.hero-button:hover {
+  background: #3e627f;
+}
+
+.home-info {
+  padding: 25px 0;
+}
+
+.home-info > h2 {
+  margin-bottom: 10px;
+}
+
+.home-info > p {
+  color: #64748b;
+}
+
+.info-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.info-card {
+  background: white;
+  border: 1px solid #e5eaf0;
+  border-radius: 10px;
+  padding: 23px;
+  transition: 0.2s;
+}
+
+.info-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 7px 18px rgba(30, 50, 70, 0.07);
+}
+
+.info-card span {
+  color: #7896b0;
+  font-weight: 700;
+  font-size: 14px;
+}
+
+.info-card h3 {
+  color: #334b63;
+  margin-bottom: 8px;
+}
+
+.info-card p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+@media (max-width: 650px) {
+  .hero {
+    padding: 35px 22px;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .info-cards {
+    grid-template-columns: 1fr;
+  }
 }
