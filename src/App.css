@@ -1,0 +1,37 @@
+main {
+  width: 90%;
+  max-width: 1100px;
+  margin: 30px auto;
+  font-family: Arial, sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
+
+nav {
+  text-align: center;
+  margin: 20px 0;
+}
+
+nav a {
+  margin: 10px;
+  text-decoration: none;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+textarea {
+  height: 100px;
+}
+
+button {
+  padding: 10px 25px;
+  cursor: pointer;
+}
