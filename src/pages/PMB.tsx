@@ -1,38 +1,95 @@
 
 import {
+  createContext,
+  useContext,
   useState,
   useEffect,
   useRef,
-  useMemo,
-  useCallback
+  useReducer,
+  useCallback,
+  useMemo
 } from 'react';
 
-import type { FormEvent } from 'react';
+import type { Dispatch, FormEvent } from 'react';
 
+// Data formulir
+type FormData = {
+  nama: string;
+  nik: string;
+  jenisKelamin: string;
+  alamat: string;
+  prodi: string;
+  email: string;
+  nomorHP: string;
+};
+
+// Jenis perubahan data
+type FormAction = {
+  type: 'UPDATE_FIELD';
+  field: keyof FormData;
+  value: string;
+};
+
+// Data awal formulir
+const initialFormData: FormData = {
+  nama: '',
+  nik: '',
+  jenisKelamin: '',
+  alamat: '',
+  prodi: '',
+  email: '',
+  nomorHP: '',
+};
+
+// Reducer untuk mengelola data formulir
+function formReducer(state: FormData, action: FormAction): FormData {
+  switch (action.type) {
+    case 'UPDATE_FIELD':
+      return {
+        ...state,
+        [action.field]: action.value,
+      };
+
+    default:
+      return state;
+  }
+}
+
+// Context untuk membagikan data formulir
+type FormContextType = {
+  formData: FormData;
+  dispatch: Dispatch<FormAction>;
+};
+
+const FormContext = createContext<FormContextType | null>(null);
+
+// Daftar program studi
 const daftarProdi = [
   'Sistem Komputer',
   'Sistem Informasi',
   'Teknik Informatika',
 ];
 
-function PMB() {
-  // 1. useState: menyimpan data formulir
-  const [nama, setNama] = useState('');
-  const [nik, setNik] = useState('');
-  const [jenisKelamin, setJenisKelamin] = useState('');
-  const [alamat, setAlamat] = useState('');
-  const [prodi, setProdi] = useState('');
-  const [email, setEmail] = useState('');
-  const [nomorHP, setNomorHP] = useState('');
+// Komponen formulir
+function FormPMB() {
+  // useContext: mengambil data dari Context
+  const context = useContext(FormContext);
+
+  if (!context) {
+    throw new Error('FormPMB harus berada di dalam FormContext');
+  }
+
+  const { formData, dispatch } = context;
+
+  // useState: menyimpan status pendaftaran
   const [sudahSubmit, setSudahSubmit] = useState(false);
 
-  // 2. useRef: mengakses input nama
+  // useRef: mengakses input nama
   const inputNama = useRef<HTMLInputElement>(null);
 
-  // 3. useEffect: mengatur judul halaman dan fokus input
+  // useEffect: mengatur judul dan fokus input
   useEffect(() => {
     document.title = 'PMB UPI';
-
     inputNama.current?.focus();
 
     return () => {
@@ -40,41 +97,22 @@ function PMB() {
     };
   }, []);
 
-  // 4. useMemo: menghitung jumlah data yang sudah diisi
+  // useMemo: menghitung jumlah kolom yang terisi
   const jumlahTerisi = useMemo(() => {
-    const data = [
-      nama,
-      nik,
-      jenisKelamin,
-      alamat,
-      prodi,
-      email,
-      nomorHP,
-    ];
+    return Object.values(formData).filter(
+      (item) => item.trim() !== ''
+    ).length;
+  }, [formData]);
 
-    return data.filter((item) => item.trim() !== '').length;
-  }, [nama, nik, jenisKelamin, alamat, prodi, email, nomorHP]);
-
-  // 5. useCallback: mengelola proses submit
+  // useCallback: mengelola proses submit
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
 
-      const dataPendaftar = {
-        nama,
-        nik,
-        jenisKelamin,
-        alamat,
-        prodi,
-        email,
-        nomorHP,
-      };
-
-      console.log('Data Pendaftaran:', dataPendaftar);
-
+      console.log('Data Pendaftaran:', formData);
       setSudahSubmit(true);
     },
-    [nama, nik, jenisKelamin, alamat, prodi, email, nomorHP]
+    [formData]
   );
 
   return (
@@ -92,8 +130,14 @@ function PMB() {
         <input
           ref={inputNama}
           type="text"
-          value={nama}
-          onChange={(e) => setNama(e.target.value)}
+          value={formData.nama}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'nama',
+              value: e.target.value,
+            })
+          }
           placeholder="Masukkan nama lengkap"
           required
         />
@@ -104,8 +148,14 @@ function PMB() {
         <br />
         <input
           type="text"
-          value={nik}
-          onChange={(e) => setNik(e.target.value)}
+          value={formData.nik}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'nik',
+              value: e.target.value,
+            })
+          }
           placeholder="Masukkan NIK"
           required
         />
@@ -115,8 +165,14 @@ function PMB() {
         <label>Jenis Kelamin</label>
         <br />
         <select
-          value={jenisKelamin}
-          onChange={(e) => setJenisKelamin(e.target.value)}
+          value={formData.jenisKelamin}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'jenisKelamin',
+              value: e.target.value,
+            })
+          }
           required
         >
           <option value="">Pilih jenis kelamin</option>
@@ -129,8 +185,14 @@ function PMB() {
         <label>Alamat</label>
         <br />
         <textarea
-          value={alamat}
-          onChange={(e) => setAlamat(e.target.value)}
+          value={formData.alamat}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'alamat',
+              value: e.target.value,
+            })
+          }
           placeholder="Masukkan alamat lengkap"
           required
         />
@@ -140,13 +202,19 @@ function PMB() {
         <label>Program Studi</label>
         <br />
         <select
-          value={prodi}
-          onChange={(e) => setProdi(e.target.value)}
+          value={formData.prodi}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'prodi',
+              value: e.target.value,
+            })
+          }
           required
         >
           <option value="">Pilih program studi</option>
-          {daftarProdi.map((item, index) => (
-            <option key={index} value={item}>
+          {daftarProdi.map((item) => (
+            <option key={item} value={item}>
               {item}
             </option>
           ))}
@@ -158,8 +226,14 @@ function PMB() {
         <br />
         <input
           type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          value={formData.email}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'email',
+              value: e.target.value,
+            })
+          }
           placeholder="Masukkan email"
           required
         />
@@ -170,8 +244,14 @@ function PMB() {
         <br />
         <input
           type="tel"
-          value={nomorHP}
-          onChange={(e) => setNomorHP(e.target.value)}
+          value={formData.nomorHP}
+          onChange={(e) =>
+            dispatch({
+              type: 'UPDATE_FIELD',
+              field: 'nomorHP',
+              value: e.target.value,
+            })
+          }
           placeholder="Masukkan nomor HP"
           required
         />
@@ -184,12 +264,27 @@ function PMB() {
       {sudahSubmit && (
         <div>
           <h3>Pendaftaran Berhasil!</h3>
-          <p>Nama: {nama}</p>
-          <p>Program Studi: {prodi}</p>
+          <p>Nama: {formData.nama}</p>
+          <p>Program Studi: {formData.prodi}</p>
           <p>Data berhasil dikirim ke Console.</p>
         </div>
       )}
     </div>
+  );
+}
+
+// Komponen utama PMB
+function PMB() {
+  // useReducer: mengelola seluruh data formulir
+  const [formData, dispatch] = useReducer(
+    formReducer,
+    initialFormData
+  );
+
+  return (
+    <FormContext.Provider value={{ formData, dispatch }}>
+      <FormPMB />
+    </FormContext.Provider>
   );
 }
 
