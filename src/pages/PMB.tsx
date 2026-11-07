@@ -12,7 +12,7 @@ import {
 
 import type { Dispatch, FormEvent } from 'react';
 
-// Data formulir
+
 type FormData = {
   nama: string;
   nik: string;
@@ -23,14 +23,14 @@ type FormData = {
   nomorHP: string;
 };
 
-// Jenis perubahan data
+
 type FormAction = {
   type: 'UPDATE_FIELD';
   field: keyof FormData;
   value: string;
 };
 
-// Data awal formulir
+
 const initialFormData: FormData = {
   nama: '',
   nik: '',
@@ -41,7 +41,6 @@ const initialFormData: FormData = {
   nomorHP: '',
 };
 
-// Reducer
 function formReducer(state: FormData, action: FormAction): FormData {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -55,7 +54,7 @@ function formReducer(state: FormData, action: FormAction): FormData {
   }
 }
 
-// Context
+
 type FormContextType = {
   formData: FormData;
   dispatch: Dispatch<FormAction>;
@@ -63,20 +62,20 @@ type FormContextType = {
 
 const FormContext = createContext<FormContextType | null>(null);
 
-// Daftar program studi
+
 const daftarProdi = [
   'Sistem Komputer',
   'Sistem Informasi',
   'Teknik Informatika',
 ];
 
-// Style input
+
 const inputStyle =
   'w-full rounded-lg border border-[#DCCBB0] bg-[#F7F4EA] px-4 py-3 text-[#243B32] outline-none transition placeholder:text-[#9A927F] focus:border-[#244735] focus:ring-2 focus:ring-[#244735]/10';
 
-// Komponen formulir
+
 function FormPMB() {
-  // useContext
+  
   const context = useContext(FormContext);
 
   if (!context) {
@@ -85,13 +84,13 @@ function FormPMB() {
 
   const { formData, dispatch } = context;
 
-  // useState
+  
   const [sudahSubmit, setSudahSubmit] = useState(false);
 
-  // useRef
+  
   const inputNama = useRef<HTMLInputElement>(null);
 
-  // useEffect
+  
   useEffect(() => {
     const judulSebelumnya = document.title;
 
@@ -103,14 +102,14 @@ function FormPMB() {
     };
   }, []);
 
-  // useMemo
+  
   const jumlahTerisi = useMemo(() => {
     return Object.values(formData).filter(
       (item) => item.trim() !== ''
     ).length;
   }, [formData]);
 
-  // useCallback
+  
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();

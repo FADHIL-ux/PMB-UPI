@@ -5,10 +5,10 @@ function Home() {
   return (
     <div className="space-y-14">
 
-      {/* Hero Section */}
+      {}
       <section className="relative overflow-hidden rounded-3xl bg-[#102D26] px-7 py-16 text-[#F7F4EA] shadow-xl md:px-14 md:py-24">
 
-        {/* Efek cahaya hitam */}
+        {}
         <div className="absolute -bottom-32 left-1/3 h-72 w-72 rounded-full bg-black/70 blur-[100px]" />
 
         <div className="relative z-10 max-w-3xl">
@@ -47,7 +47,7 @@ function Home() {
           </div>
         </div>
 
-        {/* Dekorasi */}
+        {}
         <div className="pointer-events-none absolute right-10 top-10 hidden h-40 w-40 rounded-full border border-[#DCCBB0]/20 md:block" />
         <div className="pointer-events-none absolute right-20 top-20 hidden h-20 w-20 rounded-full border border-[#DCCBB0]/20 md:block" />
 
@@ -56,7 +56,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Informasi */}
+      {}
       <section id="informasi">
 
         <div className="max-w-2xl">
@@ -74,7 +74,7 @@ function Home() {
           </p>
         </div>
 
-        {/* Kartu Informasi */}
+        {}
         <div className="mt-8 grid grid-cols-1 gap-5 md:grid-cols-3">
 
           <div className="group rounded-2xl border border-[#DCCBB0] bg-white p-7 transition duration-300 hover:-translate-y-2 hover:bg-[#F1E9DA] hover:shadow-xl">

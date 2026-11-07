@@ -3,7 +3,7 @@ function About() {
   return (
     <div className="space-y-10">
 
-      {/* Hero About */}
+      {/*About*/}
       <section className="relative overflow-hidden rounded-3xl bg-[#102D26] px-8 py-14 text-[#F7F4EA] shadow-xl md:px-14 md:py-20">
 
         <div className="absolute -bottom-24 right-10 h-64 w-64 rounded-full bg-black/60 blur-[90px]" />
@@ -30,7 +30,7 @@ function About() {
         </div>
       </section>
 
-      {/* Profil Kampus */}
+      {}
       <section className="grid grid-cols-1 gap-6 md:grid-cols-2">
 
         <div className="rounded-2xl border border-[#DCCBB0] bg-white p-8">
@@ -65,7 +65,7 @@ function About() {
 
       </section>
 
-      {/* Penutup */}
+      {}
       <section className="rounded-2xl bg-[#102D26] p-8 text-center md:p-10">
         <h2 className="text-2xl font-bold text-[#F7F4EA]">
           Masa Depan Dimulai dari Sini
