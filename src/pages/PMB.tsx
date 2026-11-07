@@ -41,7 +41,7 @@ const initialFormData: FormData = {
   nomorHP: '',
 };
 
-// Reducer untuk mengelola data formulir
+// Reducer
 function formReducer(state: FormData, action: FormAction): FormData {
   switch (action.type) {
     case 'UPDATE_FIELD':
@@ -55,7 +55,7 @@ function formReducer(state: FormData, action: FormAction): FormData {
   }
 }
 
-// Context untuk membagikan data formulir
+// Context
 type FormContextType = {
   formData: FormData;
   dispatch: Dispatch<FormAction>;
@@ -70,9 +70,13 @@ const daftarProdi = [
   'Teknik Informatika',
 ];
 
+// Style input
+const inputStyle =
+  'w-full rounded-lg border border-[#DCCBB0] bg-[#F7F4EA] px-4 py-3 text-[#243B32] outline-none transition placeholder:text-[#9A927F] focus:border-[#244735] focus:ring-2 focus:ring-[#244735]/10';
+
 // Komponen formulir
 function FormPMB() {
-  // useContext: mengambil data dari Context
+  // useContext
   const context = useContext(FormContext);
 
   if (!context) {
@@ -81,30 +85,32 @@ function FormPMB() {
 
   const { formData, dispatch } = context;
 
-  // useState: menyimpan status pendaftaran
+  // useState
   const [sudahSubmit, setSudahSubmit] = useState(false);
 
-  // useRef: mengakses input nama
+  // useRef
   const inputNama = useRef<HTMLInputElement>(null);
 
-  // useEffect: mengatur judul dan fokus input
+  // useEffect
   useEffect(() => {
+    const judulSebelumnya = document.title;
+
     document.title = 'PMB UPI';
     inputNama.current?.focus();
 
     return () => {
-      document.title = 'PMB UPI';
+      document.title = judulSebelumnya;
     };
   }, []);
 
-  // useMemo: menghitung jumlah kolom yang terisi
+  // useMemo
   const jumlahTerisi = useMemo(() => {
     return Object.values(formData).filter(
       (item) => item.trim() !== ''
     ).length;
   }, [formData]);
 
-  // useCallback: mengelola proses submit
+  // useCallback
   const handleSubmit = useCallback(
     (event: FormEvent<HTMLFormElement>) => {
       event.preventDefault();
@@ -116,166 +122,275 @@ function FormPMB() {
   );
 
   return (
-    <div>
-      <h1>PMB UPI</h1>
-      <p>Pendaftaran Mahasiswa Baru</p>
+    <div className="space-y-10">
 
-      <h2>Formulir Pendaftaran</h2>
+      {/* Hero PMB */}
+      <section className="relative overflow-hidden rounded-3xl bg-[#102D26] px-7 py-12 text-[#F7F4EA] shadow-xl md:px-12 md:py-16">
 
-      <p>Data terisi: {jumlahTerisi} dari 7 kolom</p>
+        <div className="absolute -bottom-24 right-10 h-64 w-64 rounded-full bg-black/60 blur-[90px]" />
 
-      <form onSubmit={handleSubmit}>
-        <label>Nama Lengkap</label>
-        <br />
-        <input
-          ref={inputNama}
-          type="text"
-          value={formData.nama}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'nama',
-              value: e.target.value,
-            })
-          }
-          placeholder="Masukkan nama lengkap"
-          required
-        />
+        <div className="relative z-10">
+          <span className="inline-block rounded-full border border-[#DCCBB0]/40 bg-[#DCCBB0]/10 px-4 py-2 text-xs font-semibold tracking-[0.2em] text-[#DCCBB0]">
+            PENERIMAAN MAHASISWA BARU
+          </span>
 
-        <br /><br />
+          <h1 className="mt-6 text-3xl font-bold text-[#F7F4EA] md:text-5xl">
+            Mulai Perjalananmu
+            <br />
+            <span className="text-[#DCCBB0]">Bersama UPI.</span>
+          </h1>
 
-        <label>NIK</label>
-        <br />
-        <input
-          type="text"
-          value={formData.nik}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'nik',
-              value: e.target.value,
-            })
-          }
-          placeholder="Masukkan NIK"
-          required
-        />
-
-        <br /><br />
-
-        <label>Jenis Kelamin</label>
-        <br />
-        <select
-          value={formData.jenisKelamin}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'jenisKelamin',
-              value: e.target.value,
-            })
-          }
-          required
-        >
-          <option value="">Pilih jenis kelamin</option>
-          <option value="Laki-laki">Laki-laki</option>
-          <option value="Perempuan">Perempuan</option>
-        </select>
-
-        <br /><br />
-
-        <label>Alamat</label>
-        <br />
-        <textarea
-          value={formData.alamat}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'alamat',
-              value: e.target.value,
-            })
-          }
-          placeholder="Masukkan alamat lengkap"
-          required
-        />
-
-        <br /><br />
-
-        <label>Program Studi</label>
-        <br />
-        <select
-          value={formData.prodi}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'prodi',
-              value: e.target.value,
-            })
-          }
-          required
-        >
-          <option value="">Pilih program studi</option>
-          {daftarProdi.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
-
-        <br /><br />
-
-        <label>Email</label>
-        <br />
-        <input
-          type="email"
-          value={formData.email}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'email',
-              value: e.target.value,
-            })
-          }
-          placeholder="Masukkan email"
-          required
-        />
-
-        <br /><br />
-
-        <label>Nomor HP</label>
-        <br />
-        <input
-          type="tel"
-          value={formData.nomorHP}
-          onChange={(e) =>
-            dispatch({
-              type: 'UPDATE_FIELD',
-              field: 'nomorHP',
-              value: e.target.value,
-            })
-          }
-          placeholder="Masukkan nomor HP"
-          required
-        />
-
-        <br /><br />
-
-        <button type="submit">Daftar</button>
-      </form>
-
-      {sudahSubmit && (
-        <div>
-          <h3>Pendaftaran Berhasil!</h3>
-          <p>Nama: {formData.nama}</p>
-          <p>Program Studi: {formData.prodi}</p>
-          <p>Data berhasil dikirim ke Console.</p>
+          <p className="mt-4 max-w-2xl leading-relaxed text-[#E4E8E1]">
+            Lengkapi formulir pendaftaran dengan data yang benar
+            untuk memulai perjalanan pendidikanmu.
+          </p>
         </div>
-      )}
+      </section>
+
+      {/* Formulir */}
+      <section className="mx-auto max-w-3xl">
+
+        <div className="mb-6">
+          <span className="text-xs font-bold tracking-[0.2em] text-[#8B7658]">
+            REGISTRATION FORM
+          </span>
+
+          <h2 className="mt-2 text-2xl font-bold text-[#244735] md:text-3xl">
+            Formulir Pendaftaran
+          </h2>
+
+          <p className="mt-2 text-sm leading-relaxed text-[#58675A]">
+            Silakan isi seluruh informasi di bawah ini.
+          </p>
+        </div>
+
+        {/* Progress data */}
+        <div className="mb-6 rounded-xl border border-[#DCCBB0] bg-[#EFE8DA] p-5">
+          <div className="mb-3 flex items-center justify-between">
+            <span className="text-sm font-semibold text-[#244735]">
+              Kelengkapan Data
+            </span>
+
+            <span className="text-sm font-bold text-[#244735]">
+              {jumlahTerisi} / 7
+            </span>
+          </div>
+
+          <div className="h-2 overflow-hidden rounded-full bg-[#DCCBB0]">
+            <div
+              className="h-full rounded-full bg-[#244735] transition-all duration-300"
+              style={{ width: `${(jumlahTerisi / 7) * 100}%` }}
+            />
+          </div>
+        </div>
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6 rounded-2xl border border-[#DCCBB0] bg-white p-6 shadow-sm md:p-9"
+        >
+
+          {/* Nama */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              Nama Lengkap
+            </label>
+
+            <input
+              ref={inputNama}
+              type="text"
+              value={formData.nama}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'nama',
+                  value: e.target.value,
+                })
+              }
+              placeholder="Masukkan nama lengkap"
+              className={inputStyle}
+              required
+            />
+          </div>
+
+          {/* NIK */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              NIK
+            </label>
+
+            <input
+              type="text"
+              value={formData.nik}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'nik',
+                  value: e.target.value,
+                })
+              }
+              placeholder="Masukkan NIK"
+              className={inputStyle}
+              required
+            />
+          </div>
+
+          {/* Jenis Kelamin */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              Jenis Kelamin
+            </label>
+
+            <select
+              value={formData.jenisKelamin}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'jenisKelamin',
+                  value: e.target.value,
+                })
+              }
+              className={inputStyle}
+              required
+            >
+              <option value="">Pilih jenis kelamin</option>
+              <option value="Laki-laki">Laki-laki</option>
+              <option value="Perempuan">Perempuan</option>
+            </select>
+          </div>
+
+          {/* Alamat */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              Alamat
+            </label>
+
+            <textarea
+              value={formData.alamat}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'alamat',
+                  value: e.target.value,
+                })
+              }
+              placeholder="Masukkan alamat lengkap"
+              className={`${inputStyle} min-h-28 resize-y`}
+              required
+            />
+          </div>
+
+          {/* Program Studi */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              Program Studi
+            </label>
+
+            <select
+              value={formData.prodi}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'prodi',
+                  value: e.target.value,
+                })
+              }
+              className={inputStyle}
+              required
+            >
+              <option value="">Pilih program studi</option>
+
+              {daftarProdi.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Email */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              Email
+            </label>
+
+            <input
+              type="email"
+              value={formData.email}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'email',
+                  value: e.target.value,
+                })
+              }
+              placeholder="Masukkan email"
+              className={inputStyle}
+              required
+            />
+          </div>
+
+          {/* Nomor HP */}
+          <div>
+            <label className="mb-2 block text-sm font-semibold text-[#244735]">
+              Nomor HP
+            </label>
+
+            <input
+              type="tel"
+              value={formData.nomorHP}
+              onChange={(e) =>
+                dispatch({
+                  type: 'UPDATE_FIELD',
+                  field: 'nomorHP',
+                  value: e.target.value,
+                })
+              }
+              placeholder="Masukkan nomor HP"
+              className={inputStyle}
+              required
+            />
+          </div>
+
+          {/* Tombol Submit */}
+          <div className="border-t border-[#DCCBB0] pt-6">
+            <button
+              type="submit"
+              className="w-full rounded-lg bg-black px-6 py-3.5 font-semibold text-[#F7F4EA] transition duration-300 hover:bg-[#244735] md:w-auto"
+            >
+              Kirim Pendaftaran ↗
+            </button>
+          </div>
+        </form>
+
+        {/* Hasil Pendaftaran */}
+        {sudahSubmit && (
+          <div className="mt-6 rounded-2xl border border-[#DCCBB0] bg-[#EFE8DA] p-6">
+            <h3 className="text-xl font-bold text-[#244735]">
+              Pendaftaran Berhasil!
+            </h3>
+
+            <p className="mt-3 text-[#58675A]">
+              Nama: {formData.nama}
+            </p>
+
+            <p className="text-[#58675A]">
+              Program Studi: {formData.prodi}
+            </p>
+
+            <p className="mt-2 text-sm text-[#58675A]">
+              Data berhasil dikirim ke Console.
+            </p>
+          </div>
+        )}
+
+      </section>
     </div>
   );
 }
 
 // Komponen utama PMB
 function PMB() {
-  // useReducer: mengelola seluruh data formulir
+  // useReducer
   const [formData, dispatch] = useReducer(
     formReducer,
     initialFormData
